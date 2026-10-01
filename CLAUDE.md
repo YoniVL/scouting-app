@@ -13,7 +13,7 @@ credited as the source in any publication or shared result. Keep this notice in 
 Python 3.11+, uv, DuckDB, pandas, scikit-learn, typer.
 
 - `uv sync` install; `uv run pytest` tests; `uv run ruff check .` lint
-- `uv run scout ingest|build|profile|similar`
+- `uv run scout ingest|build|profile|similar|import-values|undervalued`
 
 ## Conventions
 
@@ -24,3 +24,5 @@ Python 3.11+, uv, DuckDB, pandas, scikit-learn, typer.
   percentiles are per (season, role) pool of players above the minimum minutes.
 - Warn on small samples (below `MIN_MINUTES`).
 - Code and docs in English. No model identifiers in commits or code.
+- Market values (phase 2) live in `market_values`; imported from CSV (`values.py`). The value
+  used per player-season is the one closest to the end of the season (30 June of end year).

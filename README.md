@@ -26,6 +26,22 @@ uv run scout profile "Jamie Vardy"
 uv run scout similar "Jamie Vardy" --top 10
 ```
 
+### Market values (phase 2)
+
+Values come from your own CSV (columns `player_name, as_of_date, market_value_eur`;
+optional `club, contract_until, provider, notes`; amounts like `10m` or `500k` work).
+Names are matched accent-insensitively; add `club` to separate namesakes.
+
+```bash
+uv run scout import-values values.csv
+uv run scout similar "Jamie Vardy" --max-value 10m --contract-ends-before 2018
+uv run scout undervalued --role ST --max-value 10m --top 20
+```
+
+The `undervalued` score is performance rank (mean percentile) minus value rank within
+season and role, among eligible players that have a value. It is only meaningful with
+good value coverage, and is a screening aid rather than a verdict.
+
 ## Layout
 
 - `src/scouting/sources/` one module per data source, mapping into the common schema
