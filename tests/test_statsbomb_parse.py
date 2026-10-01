@@ -1,5 +1,8 @@
 from scouting.sources.statsbomb import (
-    clock_to_seconds, parse_events, parse_period_ends, parse_stints,
+    clock_to_seconds,
+    parse_events,
+    parse_period_ends,
+    parse_stints,
 )
 
 

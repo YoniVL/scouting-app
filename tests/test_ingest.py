@@ -22,13 +22,13 @@ class FakeSource:
             "position": "Center Back", "role": "CB", "x": 30.0, "y": 40.0,
             "end_x": 60.0, "end_y": 40.0, "xg": None}], columns=EVENT_COLUMNS)
         stints = pd.DataFrame([
-            dict(player_id=10, team="A", position="Center Back", from_period=1, from_s=0,
-                 to_period=None, to_s=None),
-            dict(player_id=11, team="A", position="Center Back", from_period=1, from_s=0,
-                 to_period=1, to_s=0),  # unused sub: 0 minutes
+            {"player_id": 10, "team": "A", "position": "Center Back", "from_period": 1, "from_s": 0,
+                 "to_period": None, "to_s": None},
+            {"player_id": 11, "team": "A", "position": "Center Back", "from_period": 1, "from_s": 0,
+                 "to_period": 1, "to_s": 0},  # unused sub: 0 minutes
         ], columns=STINT_COLUMNS)
-        players = pd.DataFrame([dict(player_id=10, player_name="Ann", player_nickname=None),
-                                dict(player_id=11, player_name="Bo", player_nickname=None)],
+        players = pd.DataFrame([{"player_id": 10, "player_name": "Ann", "player_nickname": None},
+                                {"player_id": 11, "player_name": "Bo", "player_nickname": None}],
                                columns=PLAYER_COLUMNS)
         return MatchData(events, stints, players, {1: 2700, 2: 5400})
 
