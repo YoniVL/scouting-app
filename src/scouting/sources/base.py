@@ -5,10 +5,11 @@ Everything downstream (minutes, stats, percentiles) only sees these.
 
 Event frame columns:
     event_idx, period, minute, second, type, sub_type, outcome, team,
-    player_id, position, x, y, end_x, end_y, xg
+    player_id, position, role, x, y, end_x, end_y, xg
 Stint frame columns (one row per player position stint):
     player_id, team, position, from_period, from_s, to_period, to_s
     (`from_s`/`to_s` are match-clock seconds, `to_*` is None until the end)
+Also `period_ends`: {period: end clock seconds} (final whistle per period).
 Player frame columns:
     player_id, player_name, player_nickname
 """
@@ -24,6 +25,7 @@ class MatchData:
     events: pd.DataFrame
     stints: pd.DataFrame
     players: pd.DataFrame
+    period_ends: dict[int, int]  # period -> end clock in seconds (final whistle)
 
 
 class Source(Protocol):
