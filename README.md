@@ -38,6 +38,18 @@ uv run scout similar "Jamie Vardy" --max-value 10m --contract-ends-before 2018
 uv run scout undervalued --role ST --max-value 10m --top 20
 ```
 
+Alternatively, import the public CC0 dataset
+[dcaribou/transfermarkt-datasets](https://github.com/dcaribou/transfermarkt-datasets)
+(download the CSV zip from its README into a folder, then):
+
+```bash
+uv run scout import-transfermarkt path/to/transfermarkt-datasets/
+```
+
+Players are matched on name plus club; ambiguous or unmatched players get no value. The
+dataset only holds each player's *current* contract expiry, so contracts are not imported
+from it (use the CSV import with `contract_until` if you need them).
+
 The `undervalued` score is performance rank (mean percentile) minus value rank within
 season and role, among eligible players that have a value. It is only meaningful with
 good value coverage, and is a screening aid rather than a verdict.

@@ -16,6 +16,7 @@ from .report import profile_header, profile_table, similar_table, undervalued_ta
 from .similarity import similar_players
 from .sources.statsbomb import StatsBombSource
 from .stats import build_player_season_stats
+from .tm_dataset import import_transfermarkt
 from .values import (
     attach_values,
     filter_by_value,
@@ -191,3 +192,16 @@ def undervalued(
     console.print(undervalued_table(df.sort_values("undervalued", ascending=False).head(top)))
     console.print("[dim]Score is a rough screening aid, not a verdict. "
                   "Data: StatsBomb Open Data.[/dim]")
+
+
+@app.command("import-transfermarkt")
+def import_transfermarkt_cmd(
+    directory: Annotated[str, typer.Argument(help="Folder with players.csv, "
+                                                  "player_valuations.csv, clubs.csv")],
+    db: DbOpt = str(config.DB_PATH),
+):
+    """Import values from the public Transfermarkt dataset (needs `scout build` first)."""
+    res = import_transfermarkt(_db(db), directory)
+    console.print(f"Matched {res['matched']} of {res['players']} players; "
+                  f"{res['valuations']} valuations stored.")
+    console.print("[dim]Unmatched players simply have no value (names or clubs differ).[/dim]")

@@ -71,15 +71,21 @@ def import_values(con, csv_path, source: str = "statsbomb") -> dict:
             "notes": r.get("notes") if pd.notna(r.get("notes")) else None,
         })
     out = pd.DataFrame(rows, columns=VALUE_COLS)
-    if not out.empty:
-        con.register("_vals", out)
-        con.execute("""DELETE FROM market_values USING _vals v WHERE market_values.source = v.source
-                       AND market_values.player_id = v.player_id
-                       AND market_values.as_of_date = v.as_of_date
-                       AND market_values.provider = v.provider""")
-        con.execute("INSERT INTO market_values SELECT * FROM _vals")
-        con.unregister("_vals")
+    store_values(con, out)
     return {"imported": len(out), "unmatched": sorted(set(unmatched))}
+
+
+def store_values(con, out: pd.DataFrame) -> None:
+    """Upsert rows (VALUE_COLS) into market_values, replacing same player/date/provider."""
+    if out.empty:
+        return
+    con.register("_vals", out)
+    con.execute("""DELETE FROM market_values USING _vals v WHERE market_values.source = v.source
+                   AND market_values.player_id = v.player_id
+                   AND market_values.as_of_date = v.as_of_date
+                   AND market_values.provider = v.provider""")
+    con.execute("INSERT INTO market_values SELECT * FROM _vals")
+    con.unregister("_vals")
 
 
 def attach_values(stats: pd.DataFrame, values: pd.DataFrame) -> pd.DataFrame:
